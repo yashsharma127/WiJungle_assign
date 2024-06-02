@@ -26,8 +26,8 @@ const Charts = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-white text-center">Loading...</div>;
-  } 
+    return <div className="text-white text-center text-xl">Loading...</div>;
+  }
 
   const validData = data.filter(item =>
     item.dest_port !== undefined &&
@@ -35,7 +35,6 @@ const Charts = () => {
     item.timestamp !== undefined &&
     item.flow_id !== undefined
   );
-
 
   const uniqueDestPorts = [...new Set(validData.map(item => item.dest_port))];
   const barChartData = {
@@ -68,19 +67,33 @@ const Charts = () => {
     }]
   };
 
+  const chartOptions = {
+    maintainAspectRatio: false,
+    responsive: true,
+  };
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div className="p-4 bg-gray-800 rounded-lg shadow-md">
-        <h2 className="text-white text-center">Number of Alerts per Destination Port</h2>
-        <Bar data={barChartData} />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+      <div className="p-6 bg-gray-800 rounded-lg shadow-lg relative">
+        <div className="absolute inset-0 bg-gray-900 opacity-50 rounded-lg"></div>
+        <h2 className="text-white text-center text-2xl mb-4 font-bold relative z-10">Number of Alerts per Destination Port</h2>
+        <div className="h-64 relative z-10">
+          <Bar data={barChartData} options={chartOptions} />
+        </div>
       </div>
-      <div className="p-4 bg-gray-800 rounded-lg shadow-md">
-        <h2 className="text-white text-center">Distribution of Alerts by Category</h2>
-        <Pie data={pieChartData} />
+      <div className="p-6 bg-gray-800 rounded-lg shadow-lg relative">
+        <div className="absolute inset-0 bg-gray-900 opacity-50 rounded-lg"></div>
+        <h2 className="text-white text-center text-2xl mb-4 font-bold relative z-10">Distribution of Alerts by Category</h2>
+        <div className="h-64 relative z-10">
+          <Pie data={pieChartData} options={chartOptions} />
+        </div>
       </div>
-      <div className="p-4 bg-gray-800 rounded-lg shadow-md col-span-2">
-        <h2 className="text-white text-center">Alerts Over Time</h2>
-        <Line data={lineChartData} />
+      <div className="p-6 bg-gray-800 rounded-lg shadow-lg col-span-1 md:col-span-2 relative">
+        <div className="absolute inset-0 bg-gray-900 opacity-50 rounded-lg"></div>
+        <h2 className="text-white text-center text-2xl mb-4 font-bold relative z-10">Alerts Over Time</h2>
+        <div className="h-96 relative z-10">
+          <Line data={lineChartData} options={chartOptions} />
+        </div>
       </div>
     </div>
   );
